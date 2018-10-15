@@ -92,27 +92,27 @@
               <mt-switch v-model="values"></mt-switch>
             </div>
           </li>
-          <li class="list_item" v-else>
+          <!-- <li class="list_item" v-else>
             <div class="item_left">积分抵扣
               <span class="text_dep">共0{{userInfo.integral_unit}}，可抵扣0元</span>
             </div>
             <div class="item_right">
               <mt-switch v-model="values"></mt-switch>
             </div>
-          </li>
-          <li class="list_item list_item_default" v-if="values">
+          </li> -->
+          <li class="list_item list_item_default" v-if="detailsObject.score_info&&values">
             <div class="default" v-if="detailsObject.score_info">
-              使用<span class="highlight">{{detailsObject.score_info.use_score}}</span>{{userInfo.integral_unit}}，抵扣{{detailsObject.score_info.score_price}}元
+              使用<span class="highlight">{{detailsObject.score_info.score_price*detailsObject.score_info.score_dis_per}}</span>{{userInfo.integral_unit}}，抵扣{{detailsObject.score_info.score_price}}元
             </div>
-            <div class="default" v-else>
+            <!-- <div class="default" v-else>
               使用<span class="highlight">0</span>{{userInfo.integral_unit}}，抵扣0元
-            </div>
+            </div> -->
           </li>
           <li class="list_item" v-if="detailsObject.price_info">
             <div class="item_left">还需支付</div>
             <div class="item_right active">¥{{detailsObject.price_info.fill_price}}</div>
           </li>
-          <li class="list_item" @click="selectpayList" v-if="paySelect&&detailsObject.price_info.fill_price>0">
+          <li class="list_item" @click="selectpayList" v-if="parseFloat(paySelect&&detailsObject.price_info.fill_price)>0">
             <div class="item_left">支付方式</div>
             <div class="item_right active" v-for="item in pay_sign_img" v-if="paySelect.pay_sign==item.pay_sign">
               <div class="img_wrap" >
@@ -393,7 +393,7 @@ export default {
       };
       Toast('订单支付成功');
       setStore('_payment', '');
-      this.$router.push('/result?psyStatus=1&title='+this.detailsObject.goods_info.goods_title+'&fill_price='+this.detailsObject.price_info.fill_price+'&score_price='+this.detailsObject.price_info.score_price);
+      this.$router.push('/result?psyStatus=1&title='+this.detailsObject.goods_info.goods_name+'&fill_price='+this.detailsObject.price_info.fill_price+'&score_price='+this.detailsObject.price_info.score_price);
 
     },
     //积分+现金提交支付
@@ -434,7 +434,7 @@ export default {
       var parameterId=order_num?order_num:res.data.order_num;
 
       //查看订单是否无需补款 走积分支付
-      if(this.detailsObject.price_info.fill_price){
+      if(parseFloat(this.detailsObject.price_info.fill_price)>0){
         //微信支付
         var payRes=await setWeixinOrder(parameterId,fill_price*100);
         Indicator.close();
@@ -458,7 +458,7 @@ export default {
         };
         Toast('订单支付成功');
         setStore('_payment', '');
-        this.$router.push('/result?psyStatus=1&title='+this.detailsObject.goods_info.goods_title+'&fill_price='+this.detailsObject.price_info.fill_price+'&score_price='+this.detailsObject.price_info.score_price);
+        this.$router.push('/result?psyStatus=1&title='+this.detailsObject.goods_info.goods_name+'&fill_price='+this.detailsObject.price_info.fill_price+'&score_price='+this.detailsObject.price_info.score_price);
       }
     },
 
@@ -503,7 +503,7 @@ export default {
       var parameterId=order_num?order_num:res.data.order_num;
 
       //查看订单是否无需补款 走积分支付
-      if(this.detailsObject.price_info.fill_price){
+      if(parseFloat(this.detailsObject.price_info.fill_price)>0){
         //微信支付
         var payRes=await setWeixinOrder(parameterId,fill_price*100);
         Indicator.close();
@@ -527,7 +527,7 @@ export default {
         };
         Toast('订单支付成功');
         setStore('_payment', '');
-        this.$router.push('/result?psyStatus=1&title='+this.detailsObject.goods_info.goods_title+'&fill_price='+this.detailsObject.price_info.fill_price+'&score_price='+this.detailsObject.price_info.score_price);
+        this.$router.push('/result?psyStatus=1&title='+this.detailsObject.goods_info.goods_name+'&fill_price='+this.detailsObject.price_info.fill_price+'&score_price='+this.detailsObject.price_info.score_price);
       }
     },
 
