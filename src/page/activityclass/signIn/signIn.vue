@@ -188,7 +188,9 @@ export default {
     },
     //初始化code
     initCode(year,month,day){
-      return year + (month > 9 ? month : '0' + month)+(day>9?day:'0'+day);
+      // console.log(day)
+      // return year +''+ (month > 9 ? month : '0' + month)+''+(day>9?day:'0'+day);
+      return year +''+ (month > 9 ? month : '0' + month)+''+day;
     },
     //获取日期数据
     getDateObj: function(year, month, day) {

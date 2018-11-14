@@ -93,8 +93,8 @@ export const setWeixinOrder = (order_num,total_fee) => {
 };
 
 /*============订单支付(无补款)=============*/
-export const score_SubmitOrder = (order_num) => {
-  return http.fetchPost('/api/pay.pay/payOrder', {order_num})
+export const score_SubmitOrder = (order_num,pay_type) => {
+  return http.fetchPost('/api/pay.pay/payOrder', {order_num,pay_type})
 };
 
 
@@ -110,12 +110,29 @@ export const getUserOrderInfo = (order_id) => {
   return http.fetchPost('/api/order.Order/getUserOrderInfo', { order_id})
 };
 
+/*============获取兑换记录列表（根据订单号获取）=============*/
+export const getConvertRecordList = (order_id) => {
+  return http.fetchPost('/api/convert.Convert/getConvertRecordList', { order_id,"convert_type":1})
+};
+
+
+
+
 /*============取消订单=============*/
 export const userCancelOrder = (order_id) => {
   return http.fetchPost('/api/order.Order/userCancelOrder', { order_id})
 };
 
 
+/*============发送验证码接口=============*/
+export const sendIdentifyCode = (phone) => {
+  return http.fetchPost('/api/identifyingcode.Identifyingcode/sendIdentifyCode', { phone})
+};
+
+/*============验证验证码接口=============*/
+export const checkIdentifyCode = (phone,code) => {
+  return http.fetchPost('/api/identifyingcode.Identifyingcode/checkIdentifyCode', { phone,code})
+};
 
 
 

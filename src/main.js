@@ -53,8 +53,8 @@ axios.interceptors.request.use(
     var access_token = getStore('access_token');
     var refresh_token = getStore('refresh_token');
     if(access_token&&refresh_token){
-      config.data.access_token=access_token;
-      config.data.refresh_token=refresh_token;
+      config.data.access_token=access_token;//'d36825c281c97f081e208749c9dffd6e';//access_token;
+      config.data.refresh_token=refresh_token;//'24bda405157fd4ae7c8e4f941fb33d12';//refresh_token;
       config.data=qs.stringify(config.data)
     }else{
       /*location.href=domain;*/
@@ -73,6 +73,12 @@ axios.interceptors.request.use(
 //受访白名单页面
 const whiteList = ['test','androidTest'];
 router.beforeEach((to, from, next) => {
+  // console.log(from)
+  // //如果是
+  // if(to.name=='confirm'&&from.name=='result'){
+  //   next('/');
+  //   return;
+  // }
   /* 路由发生变化修改页面title */
   if (to.meta.title) {
     document.title = to.meta.title
@@ -81,6 +87,7 @@ router.beforeEach((to, from, next) => {
     next();
     return;
   }
+
   //如果是首页进来
   if(to.name=='msite'){
     //查看本地是否有token
@@ -114,6 +121,18 @@ router.beforeEach((to, from, next) => {
       // alert(JSON.stringify(res));
       store.commit('KEEP_USERINFO', res.data);
       store.commit('SET_LOADING', true);
+      // if(store.state.isGonghang){
+      //   if(to.name=='msite'){
+      //     alert('我是首页');
+      //     console.dir(Vue.$bus)
+      //     // this.$bus.$emit('gonghangFn', { "transType": "NOTICE_IS_INDEX", "transData": {}, "callback":function(data){
+      //     //   alert(data)
+      //     //   alert('通知你了android')
+      //     // }});
+      //   }else{
+      //     alert('我不是首页')
+      //   }
+      // }
       next()
     }else{
       if(res.message.code==2){//token过期

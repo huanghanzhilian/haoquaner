@@ -8,18 +8,20 @@
  */
 
 let baseUrl = '';
-//let routerMode = 'history';
-let routerMode = 'hash';
+let routerMode = 'history';
+// let routerMode = 'hash';
 let imgBaseUrl = '';
-// https://fdfs.51jifengou.com/
-// let imgBaseUrl = 'http://p14wwtw7q.bkt.clouddn.com/';
-//let imgBaseUrl = 'http://static.samured.com';
-//http://182.254.246.232:8080/
+
+
 if (process.env.NODE_ENV == 'development') {
 	imgBaseUrl = 'http://182.254.246.232:8080/';
 }else if(process.env.NODE_ENV == 'production'){
-	imgBaseUrl = 'http://182.254.246.232:8080/';
-	// imgBaseUrl = 'https://fdfs.51jifengou.com/';
+	imgBaseUrl = 'https://fdfs.51jifengou.com/';
+	var fieldHostname = location.hostname || '';
+	//如果等于测试域名
+	if (fieldHostname && fieldHostname.indexOf('t-saash5.lakalayunjifen.com') != -1) {
+        imgBaseUrl = 'http://182.254.246.232:8080/';
+    }
 }
 
 export {

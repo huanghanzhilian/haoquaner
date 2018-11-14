@@ -26,10 +26,6 @@ export default {
 
 
 
-
-
-
-
     // 时间转换
     Vue.prototype.formatDuring = function(mss) {
       mss = mss * 1000;

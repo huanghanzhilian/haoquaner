@@ -333,12 +333,23 @@ export default {
         }
       }
 
-      .item_imgBox {
+      /*.item_imgBox {
         padding:.85rem .35rem;
         img {
           width: 100%;
           height: 2rem;
           border-radius: .08rem;
+          display: block;
+        }
+      }*/
+      .item_imgBox {
+        width: 100%;
+        height: 3.7rem;
+        /*padding:.85rem .35rem;*/
+        img {
+          width: 100%;
+          height: 100%;
+          /*border-radius: .08rem;*/
           display: block;
         }
       }

@@ -96,7 +96,7 @@ export default {
   .three_wrap{
     .three_title{
       padding: .16rem .22rem;
-      border-bottom: solid .025rem #E0E0E0;
+      border-bottom: solid .012rem #E0E0E0;
       .lisl{
         width: .04rem;
         height: .25rem;
@@ -116,7 +116,7 @@ export default {
       .three_item{
         flex: 1;
         padding: .15rem .12rem;
-        border-right: solid .025rem #E0E0E0;
+        border-right: solid .012rem #E0E0E0;
         &:last-child {
             border-right:none;
         }

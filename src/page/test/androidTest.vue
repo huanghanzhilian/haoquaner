@@ -1,25 +1,22 @@
 <template>
   <div class="exchange_container">
-    <p>
-      <input type="text" id="text1" value="请输入测试数据" width="400px" height="200px" />
-    </p>
-    <p>
-      <button @click="testClick">调用安卓的方法</button>
-    </p>
   </div>
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex'
-import { getGoodsList } from 'src/service/getData'
+import { setStore, getStore } from 'src/config/mUtils'
+import { getUserOrderInfo } from 'src/service/getData'
 import { loadMore, getImgPath } from 'src/components/common/mixin'
 import { imgBaseUrl } from 'src/config/env'
+import { Toast, Switch, MessageBox, Indicator } from 'mint-ui';
 
 
 export default {
   //数据
   data() {
     return {
-
+      payingNumber:0, //订单状态轮询次数
+      timeId:null,//订单状态定时器
     }
   },
   //创建完毕状态
@@ -58,62 +55,72 @@ export default {
     initData() {
       this.SET_LOADING(false);
 
-      //注册回调函数，第一次连接时调用 初始化函数
-      this.connectWebViewJavascriptBridge(function(bridge) {
-        //初始化
-        bridge.init(function(message, responseCallback) {
-          var data = {
-            'Javascript Responds': 'Wee!'
-          };
-          //响应回调
-          responseCallback(data);
+      MessageBox.alert('确认支付是否完成?', '提示', {
+        confirmButtonText: '已完成支付'
+      }).then(() => {
+        Indicator.open({
+          text: '请等候...',
+          spinnerType: 'fading-circle'
         });
+        this.timeId = setInterval(() => {
+          this.isPayComplete(12);
+        }, 1000)
 
-        //Android调用js方法：functionInJs方法名称需要保持一致 ，并返回给Android通知
+        // setTimeout(() => {
+        //   this.isPayComplete(12);
+        // }, 500)
+      }, () => {
 
-        bridge.registerHandler("functionInJs", function(data, responseCallback) {
-          alert(data);
-          var data = document.getElementById("text1").value;
-          var responseData = "我是Android调用js方法返回的数据---" + data;
-          responseCallback(responseData);
-        });
-      })
+      });
     },
 
-    //JS注册事件监听
-    connectWebViewJavascriptBridge(callback) {
-      if (window.WebViewJavascriptBridge) {
-        callback(WebViewJavascriptBridge)
-      } else {
-        document.addEventListener(
-          'WebViewJavascriptBridgeReady',
-          function() {
-            callback(WebViewJavascriptBridge)
-          },
-          false
-        );
+
+    //判断是否h5支付完成
+    async isPayComplete(openinfowea) {
+      ++this.payingNumber;
+
+      if (!openinfowea) {
+        Toast('订单号为空');
+        clearInterval(this.timeId);
+        Indicator.close();
+        return;
       }
-    },
-
-    //点击
-    testClick() {
-      //参数一：调用java中的方法   submitFromWeb是方法名，必须和Android中注册时候的方法名称保持一致
-      //参数二：返回给Android端的数据，可以为字符串，json等信息
-      //参数三：js接收到Android传递过来的数据之后的相应处理逻辑
-      window.WebViewJavascriptBridge.callHandler(
-        'submitFromWeb',
-        {
-          "transType": "MULTI_PURCHASE",
-          "ctrlData": { "APP_NAME": "好券", "AIDL_VER": "V1.0.2" },
-          "transData":{"AMOUNT":1,"TRANS_LIST":["INTEGRAL_PURCHASE"]}
-        },
-        // { "transType": "LOGON", "ctrlData": { "APP_NAME": "好券", "AIDL_VER": "V1.0.2" } },
-        function(responseData) {
-          alert(responseData)
+      console.log(this.payingNumber)
+      if(this.payingNumber>=10){
+        clearInterval(this.timeId);
+      }
+      await getUserOrderInfo(openinfowea).then(res => {
+        if (!res.res) {
+          if(this.payingNumber>=10){
+            setStore('_payment', '');
+            Indicator.close();
+            Toast('订单支付失败');
+          }
+        } else {
+          if (res.data.status == 1 || res.data.status == 4) {
+            Indicator.close();
+            setStore('_payment', '');
+            Toast('订单支付成功');
+            clearInterval(this.timeId);
+            this.$router.replace('/result?psyStatus=1&order_id=' + openinfowea);
+          } else if (res.data.status == 0) {
+            if(this.payingNumber>=10){
+              setStore('_payment', '');
+              Indicator.close();
+              Toast('订单未支付');
+            }
+          } else {
+            if(this.payingNumber>=10){
+              setStore('_payment', '');
+              Indicator.close();
+              Toast('订单支付失败');
+            }
+          }
         }
+      })
 
-      );
     },
+
 
   },
 

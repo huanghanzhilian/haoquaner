@@ -46,10 +46,10 @@ switch(process.env.NODE_ENV){
     //case 'online': var proxypath = 'http://localhost:3091'; break;
 
     //链条后台线下
-    case 'online': var proxypath = 'http://182.254.246.232:8292'; break;
+    //case 'online': var proxypath = 'http://182.254.246.232:8292'; break;
 
     //链条数据线上
-    //case 'online': var proxypath = 'http://m.samuredwonder.com/'; break;
+    case 'online': var proxypath = 'http://h5.hicardhome.com'; break;
 
     //n层代理
     //case 'online': var proxypath = 'http://samuredwonder.s1.natapp.cc'; break;

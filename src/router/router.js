@@ -31,6 +31,7 @@ const signIn = r => require.ensure([], () => r(require('../page/activityclass/si
 /*============我的订单=========================*/
 const accountOrder = r => require.ensure([], () => r(require('../page/accountOrder/accountOrder')), 'accountOrder'); //我的订单
 const orderDetail = r => require.ensure([], () => r(require('../page/orderDetail/orderDetail')), 'orderDetail'); //订单详情页面
+const voucherList = r => require.ensure([], () => r(require('../page/orderDetail/voucherList')), 'voucherList'); //查看券列表
 
 /*===================我的积分==================*/
 const integralQuery = r => require.ensure([], () => r(require('../page/integralQuery/integralQuery')), 'integralQuery'); //我的积分
@@ -64,7 +65,7 @@ export default [{
       component: msite,
       meta: {
         // keepAlive: true,
-        title: '拉卡拉-积分购'
+        title: ''
       },
     },
     //兑换列表页
@@ -86,7 +87,16 @@ export default [{
         title: '订单详情'
       },
     },
-    
+    //查看券列表
+    {
+      path: '/voucherList',
+      name: 'voucherList',
+      component: voucherList,
+      meta: {
+        title: '查看券列表'
+      },
+    },
+
     //putForward
     {
       path: '/putForward',

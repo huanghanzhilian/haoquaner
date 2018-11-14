@@ -27,7 +27,7 @@ export default {
 
 .activity_content {
   background-color: #fff;
-  padding: .2rem;
+  /*padding: .2rem;*/
   color: #10202f;
   overflow-y: hidden;
   .title {

@@ -5,7 +5,7 @@
         <div class="item_row">
           <div class="item_row_l">{{detailsObject.status|Status}}</div>
           <div class="item_row_r">
-            <span class="page_top_btn" v-if="detailsObject.status==1">查看商品</span>
+            <router-link :to="{path: '/voucherList', query:{order_id:detailsObject.id}}" tag="span" class="page_top_btn" v-if="detailsObject.status==1">查看商品</router-link>
           </div>
         </div>
         <div class="item_row" v-if="detailsObject.status==0">
@@ -18,8 +18,10 @@
       </div>
       <div class="layer_content">
         <div class="item_title">
-          <div class="item_title_l">{{detailsObject.goods_name}}</div>
-          <div class="item_title_r">售价：¥{{FormatMoney(detailsObject.goods_price)}}</div>
+          <div class="item_title_l ellipsis">{{detailsObject.goods_name}}</div>
+          <div class="item_title_r" v-if="detailsObject.use_score&&!detailsObject.fill_price">支付：{{detailsObject.use_score}}{{userInfo.integral_unit}}</div>
+          <div class="item_title_r" v-if="!detailsObject.use_score&&detailsObject.fill_price">支付：¥{{FormatMoney(detailsObject.fill_price)}}</div>
+          <div class="item_title_r" v-if="detailsObject.use_score&&detailsObject.fill_price">支付：{{detailsObject.use_score}}{{userInfo.integral_unit}}+¥{{FormatMoney(detailsObject.fill_price)}}</div>
         </div>
         <div class="list_row">
           <div class="item_row">
@@ -36,25 +38,29 @@
           </div>
           <div class="item_row" v-if="detailsObject.status!=2&&detailsObject.status!=3">
             <div class="item_row_l">积分抵扣</div>
-            <div class="item_row_r">{{detailsObject.score_price}}{{userInfo.integral_unit}}</div>
+            <div class="item_row_r">{{detailsObject.use_score||'0'}}{{userInfo.integral_unit}}</div>
           </div>
           <div class="item_row" v-if="detailsObject.status!=2&&detailsObject.status!=3">
             <div class="item_row_l">支付</div>
             <div class="item_row_r">￥{{FormatMoney(detailsObject.fill_price)}}</div>
           </div>
+          <div class="item_row" v-if="detailsObject.status==2&&detailsObject.close_msg">
+            <div class="item_row_l">关闭原因</div>
+            <div class="item_row_r">{{detailsObject.close_msg}}</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="phone_wrap">
-      <a href="tel:18231321037" class="call">
+    <div class="phone_wrap" v-if="userInfo.telephone">
+      <a :href="'tel:'+userInfo.telephone" class="call">
         <i data-v-36004bd8="" class="iconfont icon-dianhua call_icon"></i>
         <span class="call_text">联系客服</span>
       </a>
     </div>
-    <div class="paley_bottom" v-if="detailsObject.status==1">
+    <!-- <div class="paley_bottom" v-if="detailsObject.status==1">
       <div class="item_btn">退款</div>
       <div class="item_btn">折现</div>
-    </div>
+    </div> -->
     <error-control v-if="errorObj.status" :errorObj="errorObj"></error-control>
   </div>
 </template>
@@ -98,7 +104,7 @@ export default {
   filters: {
     Status: function(input) {
       if (input == 0) {
-        return "等待"
+        return "待支付"
       } else if (input == 1) {
         return "成功"
       } else if (input == 2) {
@@ -106,9 +112,11 @@ export default {
       } else if (input == 3) {
         return "取消"
       } else if (input == 4) {
-        return "退款中"
+        return "发货中"
       } else if (input == 5) {
-        return "退款完成"
+        return "退款中"
+      } else if (input == 6) {
+        return "已退款"
       }
     },
   },
@@ -219,7 +227,7 @@ export default {
     align-items: center;
     border-bottom: 0.025rem solid #f0f0f0;
     .item_title_l{
-
+      width: 40%;
     }
     .item_title_r{
 

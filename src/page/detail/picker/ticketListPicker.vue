@@ -18,7 +18,7 @@
           <ul class="opslo_list_wrap">
             <li class="opslo_list" v-for="(item,index) in options" @click="increase(index)">
               <div class="item_left">{{item.name}}
-                <span class="text_dep">{{item.create_time}}</span>
+                <!-- <span class="text_dep">{{item.create_time}}</span> -->
               </div>
               <div class="item_right">
                 <i v-if="item.id==value.id" class="iconfont icon-duigou- icon_styles"></i>

@@ -4,14 +4,14 @@
       <router-link :to="{path: '/orderDetail', query:{id:item.id}}" tag="li" class="dopser_item" v-for="item in orderListArr">
         <div class="dopser_item_l">
           <div class="item_line">
-            <div class="item_line_l">{{item.goods_name}}</div>
-            <div class="item_line_r" v-if="item.score_price&&!item.fill_price">{{item.score_price}}{{userInfo.integral_unit}}</div>
-            <div class="item_line_r" v-if="!item.score_price&&item.fill_price">￥{{item.fill_price}}</div>
-            <div class="item_line_r" v-if="item.score_price&&item.fill_price">{{item.score_price}}{{userInfo.integral_unit}}+￥{{item.fill_price}}</div>
+            <div class="item_line_l ellipsis">{{item.goods_name}}</div>
+            <div class="item_line_r ellipsis" v-if="item.use_score&&!item.fill_price">{{item.use_score}}{{userInfo.integral_unit}}</div>
+            <div class="item_line_r ellipsis" v-if="!item.use_score&&item.fill_price">￥{{FormatMoney(item.fill_price)}}</div>
+            <div class="item_line_r ellipsis" v-if="item.use_score&&item.fill_price">{{item.use_score}}{{userInfo.integral_unit}}+￥{{FormatMoney(item.fill_price)}}</div>
           </div>
           <div class="item_line default">
-            <div class="item_line_l">{{item.create_time}}</div>
-            <div class="item_line_r">{{item.status|Status}}</div>
+            <div class="item_line_l ellipsis">{{item.create_time}}</div>
+            <div class="item_line_r ellipsis">{{item.status|Status}}</div>
           </div>
         </div>
         <div class="dopser_item_r">
@@ -76,7 +76,7 @@ export default {
   filters: {
     Status: function(input) {
       if (input == 0) {
-        return "等待"
+        return "待支付"
       } else if (input == 1) {
         return "成功"
       } else if (input == 2) {
@@ -84,9 +84,11 @@ export default {
       } else if (input == 3) {
         return "取消"
       } else if (input == 4) {
-        return "退款中"
+        return "发货中"
       } else if (input == 5) {
-        return "退款完成"
+        return "退款中"
+      } else if (input == 6) {
+        return "已退款"
       }
     },
   },
@@ -200,11 +202,19 @@ export default {
       flex: 1;
       padding-right: .2rem;
       .item_line{
+        width: 100%;
         @include fj;
         align-items: center;
         line-height: .48rem;
         font-size: .32rem;
         color: #333333;
+        .item_line_l{
+          width: 3rem;
+        }
+        .item_line_r{
+          width: 3.3rem;
+          text-align: right;
+        }
         &.default{
           margin-top: .1rem;
           font-size: .24rem;

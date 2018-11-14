@@ -2,7 +2,7 @@
   <!-- 组件盒子 -->
   <div class="content_box">
     <div class="content_top">
-      <div class="content_top_title">{{commoArray.element_name||'NONE'}}</div>
+      <div class="content_top_title">{{commoArray.element_name}}</div>
       <router-link tag="span" to="goodsList" class="content_mone">更多&gt;&gt;</router-link>
     </div>
     <ul class="content_list_wrap">
@@ -58,7 +58,7 @@ export default {
   //计算值 这里可以实时监听某个数据的变化
   computed: {
     ...mapState([
-      'userInfo'
+      'userInfo','isGonghang'
     ]),
   },
 
@@ -104,18 +104,20 @@ export default {
       &:before {
         content: "";
         width: .6rem;
-        height: .025rem;
+        height: .012rem;
         background-color: #999999;
         @include ct();
         left: -.68rem;
+        opacity:0.8;
       }
       &:after {
         content: "";
         width: .6rem;
-        height: .025rem;
+        height: .012rem;
         background-color: #999999;
         @include ct();
         right: -.68rem;
+        opacity:0.8;
       }
     }
     .content_mone {
@@ -183,11 +185,13 @@ export default {
       }
 
       .item_imgBox {
-        padding:.85rem .35rem;
+        width: 100%;
+        height: 3.7rem;
+        /*padding:.85rem .35rem;*/
         img {
           width: 100%;
-          height: 2rem;
-          border-radius: .08rem;
+          height: 100%;
+          /*border-radius: .08rem;*/
           display: block;
         }
       }

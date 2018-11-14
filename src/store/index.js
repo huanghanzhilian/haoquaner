@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
 	userInfo:{},//用户登入后信息
 	loadingbox:true,//全局loading
+	isGonghang:false,//是否是工行
 }
 
 export default new Vuex.Store({

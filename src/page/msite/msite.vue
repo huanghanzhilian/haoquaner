@@ -63,6 +63,7 @@ export default {
 
   //创建完毕状态
   created() {
+    document.title = this.userInfo.mall_name;
     this.is_draft = this.$route.query.is_draft;
     //this.productId = this.$route.query.productId;
   },
@@ -91,7 +92,9 @@ export default {
 
   //计算值 这里可以实时监听某个数据的变化
   computed: {
-
+    ...mapState([
+      'userInfo','isGonghang'
+    ]),
   },
 
   //方法

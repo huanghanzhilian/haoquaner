@@ -34,7 +34,7 @@ export default {
     },
     maxCount:{
       type: Number,
-      default: 99
+      default: 10
     }
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
   height: .5rem;
   position: relative;
   display: inline-block;
-  border: solid .025rem #d6d6d6;
+  border: solid .012rem #d6d6d6;
   border-radius: .05rem;
   overflow: hidden;
   .input-number-btn{
@@ -89,11 +89,11 @@ export default {
     }
   }
   .input-number-decrease{
-    border-right: solid .025rem #d6d6d6;
+    border-right: solid .012rem #d6d6d6;
     left: 0;
   }
   .input-number-increase{
-    border-left: solid .025rem #d6d6d6;
+    border-left: solid .012rem #d6d6d6;
     right: 0;
   }
   .input-wrap{
